@@ -1,5 +1,5 @@
 
-
+const Task = require("../models/Task")
 
 const getAllTasks = (req, res) => {
 
@@ -8,10 +8,10 @@ const getAllTasks = (req, res) => {
 
 }
 
-const createtask = (req, res) => {
+const createtask = async (req, res) => {
 
-
-    res.json(req.bodd)
+    const task = await Task.create(req.body);
+    res.status(201).json({ task })
 
 }
 

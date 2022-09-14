@@ -3,7 +3,10 @@ const mangoose = require('mongoose');
 
 const TaskSchema = new mangoose.Schema({
     name: String,
-    completed: Boolean
+    completed: Boolean,
 
 
 })
+
+
+module.exports = mangoose.model('Task', TaskSchema)

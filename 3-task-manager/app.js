@@ -5,9 +5,9 @@ const express = require("express");
 const task = require("./routes/tasks")
 const connectDB = require("./db/connect")
 require('dotenv').config()
+const notFound = require("./middleware/not-fount");
+
 const app = express();
-
-
 app.use(express.json())
 app.use(express.static('./public'))
 // const server = http.createServer((req, res) => {
@@ -24,13 +24,17 @@ app.use(express.static('./public'))
 // });
 
 app.use('/api/v1/tasks', task)
-// console.log("hello")
 
+app.use(notFound);
+
+
+// console.log("hello")
+const port = process.env.PORT || 5000;
 
 const start = async () => {
     try {
         await connectDB(process.env.MONGO_URI)
-        app.listen(5000, console.log("server is working on post 5000"))
+        app.listen(port, console.log(`server is working on post ${port}`))
     } catch (error) {
         console.log(error)
     }

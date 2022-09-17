@@ -7,7 +7,9 @@ const connectDB = require("./db/connect")
 require('dotenv').config()
 const app = express();
 
+
 app.use(express.json())
+app.use(express.static('./public'))
 // const server = http.createServer((req, res) => {
 
 //     res.write("Hellow world")
@@ -15,11 +17,11 @@ app.use(express.json())
 
 
 // });
-app.get("/Task", (req, res) => {
+// app.get("/Task", (req, res) => {
 
 
-    res.send("Welcome to task")
-});
+//     res.send("Welcome to task")
+// });
 
 app.use('/api/v1/tasks', task)
 // console.log("hello")

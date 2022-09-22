@@ -4,7 +4,7 @@ const getAllProductsStatic = async (req, res) => {
     const product = await Product.find({ "feature": false, })
     await res.status(200).json({ product, nbHits: product.length });
 }
-
+// Just for commit
 
 
 const getAllProducts = async (req, res) => {

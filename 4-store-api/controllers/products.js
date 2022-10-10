@@ -6,6 +6,7 @@ const getAllProductsStatic = async (req, res) => {
 }
 // Just for commit
 // Second commit
+// Second commit2
 
 
 const getAllProducts = async (req, res) => {

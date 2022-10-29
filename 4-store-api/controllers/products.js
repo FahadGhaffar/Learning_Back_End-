@@ -1,7 +1,7 @@
 const Product = require("../model/product")
 
 const getAllProductsStatic = async (req, res) => {
-    const product = await Product.find({}).sort('-name -price')
+    const product = await Product.find({ price: { $gt: 30 } }).sort('price')
     await res.status(200).json({ product, nbHits: product.length });
 }
 // Just for commit
@@ -10,7 +10,7 @@ const getAllProductsStatic = async (req, res) => {
 
 
 const getAllProducts = async (req, res) => {
-    const { feature, company, name, sort, field } = req.query
+    const { feature, company, name, sort, field, numericFilters } = req.query
     const queryObject = {}
     // console.log(feature);
     if (feature) {
@@ -38,6 +38,29 @@ const getAllProducts = async (req, res) => {
         const fieldList = field.split(",").join(' ')
         result = result.select(fieldList);
 
+    }
+    if (numericFilters) {
+        const operatorMap = {
+            '>': '$gt',
+            '>=': '$gte',
+            '=': '$eq',
+            '<': '$lt',
+            '<=': '$lte',
+        }
+        const regEx = /\b(<|>|>=|=|<|<=)\b/g
+
+        let filters = numericFilters.replace(regEx, (match) => `-${operatorMap[match]}-`)
+
+        const options = ['price', 'rating']
+        filters = filters.split(',').forEach((item) => {
+            const [field, opertor, value] = item.split('-')
+            if (options.includes(field)) {
+
+                queryObject[field] = { [opertor]: Number(value) }
+            }
+        });
+
+        console.log(queryObject);
     }
     const page = Number(req.query.page) || 1
     const limit = Number(req.query.limit) || 10

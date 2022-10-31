@@ -12,7 +12,7 @@ const router = express.Router();
 // const connectDB = require("./db/connect");
 
 // const productsRouter = require("./routes/products");
-
+const mainRouter = require("./routes/main")
 const notFoundMiddleware = require("./middlerware/error-handler")
 const notFound = require("./middlerware/not-found");
 const { application } = require("express");
@@ -31,7 +31,7 @@ app.use(express.json())
 
 // })
 
-// app.use('/api/v1/products', productsRouter);
+app.use('/api/v1/', mainRouter);
 app.get("/check", (req, res) => {
 
     res.send('hello')

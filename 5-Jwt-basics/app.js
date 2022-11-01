@@ -5,6 +5,7 @@ require("express-async-errors");
 
 // const { application } = require("express");
 const express = require("express")
+// const bp = require('body-parser')
 
 const app = express();
 const router = express.Router();
@@ -32,6 +33,7 @@ app.use(express.json())
 // })
 
 app.use('/api/v1/', mainRouter);
+
 app.get("/check", (req, res) => {
 
     res.send('hello')

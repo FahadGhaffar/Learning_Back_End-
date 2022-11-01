@@ -1,10 +1,10 @@
 const { model } = require("mongoose")
 
 
-const login = (req, res) => {
+const login = async (req, res) => {
 
 
-    const { username, password } = req.body
+    const { username, password } = await req.body
     console.log(username, password);
     console.log(req.body)
     res.send('Fake Login/Register/Signup Route')

@@ -20,15 +20,39 @@ const login = async (req, res) => {
     const token = jwt.sign({ id, username }, process.env.JWT_SECRET, { expiresIn: '30d' })
     console.log(username, password);
     console.log(token)
-    res.send('Fake Login/Register/Signup Route')
+    res.status(200).send({ msg: "your token is ", token })
 
 }
 
 
 const dashboard = (req, res) => {
-    const luckyNumber = Math.floor(Math.random() * 100)
 
-    res.status(200).json({ msg: `Hello, John Doe`, secret: `Here is your authorized data, your lucky number is ${luckyNumber}` })
+    const authHeader = req.headers.authorization;
+    // console.log(authHeader);
+
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+
+        throw new CustomAPIError("NO Token provided ", 400)
+
+    }
+
+    const token = authHeader.split(" ")[1]
+    console.log(token);
+
+    try {
+        const decoder = jwt.verify(token, process.env.JWT_SECRET)
+        const luckyNumber = Math.floor(Math.random() * 100)
+
+        res.status(200).json({ msg: `Hello, ${decoder.username}`, secret: `Here is your authorized data, your lucky number is ${luckyNumber}` })
+
+    } catch (error) {
+        console.log(error);
+        throw new CustomAPIError("Token is not correct ", 400)
+
+    }
+
+
+
 
 
 }

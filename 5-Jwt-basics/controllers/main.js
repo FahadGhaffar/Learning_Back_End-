@@ -37,7 +37,7 @@ const dashboard = (req, res) => {
     }
 
     const token = authHeader.split(" ")[1]
-    console.log(token);
+    // console.log(token);
 
     try {
         const decoder = jwt.verify(token, process.env.JWT_SECRET)

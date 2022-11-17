@@ -13,34 +13,27 @@ const router = express.Router();
 // const connectDB = require("./db/connect");
 
 // const productsRouter = require("./routes/products");
-const mainRouter = require("./routes/main")
-const notFoundMiddleware = require("./middlerware/error-handler")
-const notFound = require("./middlerware/not-found");
-const { application } = require("express");
 
-app.use(express.static('./public'))
+const errorHandlerMiddleware = require("./middlerware/error-handler")
+const notFoundMiddleware = require("./middlerware/not-found");
+
 app.use(express.json())
-// app.use(express.json)
-// router.route('/').get((req, res) => {
-//     console.log("checking")
-//     // res.send(`<h1>Store APi</h1 ><a href="/api/v1/products"> Products route</a>`)
-//     res.send("hello");
-// })
-// app.get('/', (req, res) => {
 
-//     res.send(`<h1>Store APi</h1 ><a href="/api/v1/products"> Products route</a>`)
+app.get('/', (req, res) => {
 
-// })
+    res.send(`<h1>Store APi</h1 ><a href="#"> Products route</a>`)
 
-app.use('/api/v1/', mainRouter);
+})
+
+// app.use('/api/v1/', mainRouter);
 
 app.get("/check", (req, res) => {
 
     res.send('hello')
 
 })
+app.use(errorHandlerMiddleware);
 app.use(notFoundMiddleware);
-app.use(notFound);
 const Port = process.env.PORT || 5000
 
 

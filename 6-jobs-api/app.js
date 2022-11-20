@@ -8,11 +8,16 @@ const express = require("express")
 // const bp = require('body-parser')
 
 const app = express();
-const router = express.Router();
 
+
+const connectDB = require("./db/connect")
 // const connectDB = require("./db/connect");
-
+// route
 // const productsRouter = require("./routes/products");
+const authRouter = require("./routes/auth");
+const jobRouter = require("./routes/jobs");
+
+
 
 const errorHandlerMiddleware = require("./middlerware/error-handler")
 const notFoundMiddleware = require("./middlerware/not-found");
@@ -32,14 +37,18 @@ app.get("/check", (req, res) => {
     res.send('hello')
 
 })
+app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/jobs", jobRouter);
+
 app.use(errorHandlerMiddleware);
 app.use(notFoundMiddleware);
 const Port = process.env.PORT || 5000
 
 
-const start = () => {
+const start = async () => {
     try {
         // await connectDB(process.env.MONGO_URI);
+        await connectDB(process.env.MONGO_URI);
         app.listen(Port, console.log(`you current Port is ${Port}`));
     } catch (error) {
         console.log(error);

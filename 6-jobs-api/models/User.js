@@ -1,4 +1,8 @@
+require("dotenv").config();
 const { default: mongoose } = require("mongoose")
+const bcrypt = require('bcryptjs')
+const jwt = require("jsonwebtoken")
+
 const mangoose = require("mongoose")
 
 
@@ -23,14 +27,26 @@ const UserSchema = new mangoose.Schema({
     password: {
         type: String,
         require: [true, "Please provide password"],
-        minlength: 6,
-        maxlenght: 12,
+        minlength: 6
+
 
     }
 
+})
 
+UserSchema.pre('save', async function (next) {
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt)
+    next()
 
 })
 
+UserSchema.methods.CreateJWT = function () {
+    return jwt.sign({ userId: this._id, name: this.name }, process.env.JWT_SECRETS, { expiresIn: process.env.JWT_LIFETIME, })
+
+}
+UserSchema.methods.getName = function () {
+    return this.name
+}
 
 module.exports = mongoose.model("User", UserSchema);

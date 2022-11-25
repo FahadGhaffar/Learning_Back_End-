@@ -3,7 +3,7 @@ const { StatusCodes } = require("http-status-codes")
 
 const bcrypt = require('bcryptjs')
 
-const { BadRequestError } = require("../errors")
+const { BadRequestError, UnauthenticatedError } = require("../errors")
 
 const register = async (req, res) => {
     // const { name, email, password } = req.body
@@ -26,9 +26,34 @@ const register = async (req, res) => {
 }
 
 
-const login = (req, res) => {
+const login = async (req, res) => {
+    const { email, password } = req.body
 
-    res.send("login")
+
+    if (!email || !password) {
+        console.log((password));
+        throw new BadRequestError("Please provde login and password")
+
+    }
+
+    const user = await User.findOne({ email })
+
+
+    // compare password
+
+    if (!user) {
+        throw new UnauthenticatedError("Invalid Credentials")
+    }
+    const isPasswordCorrect = await user.comparePassword(password)
+
+
+    if (!isPasswordCorrect) {
+        throw new UnauthenticatedError("Invalid Credentials")
+    }
+    const token = user.CreateJWT();
+
+
+    res.status(StatusCodes.OK).json({ User: { name: user.name }, token });
 }
 
 module.exports = {

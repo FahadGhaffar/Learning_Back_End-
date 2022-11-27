@@ -11,6 +11,8 @@ const app = express();
 
 
 const connectDB = require("./db/connect")
+
+const autnenticateUser = require("./middlerware/authentication")
 // const connectDB = require("./db/connect");
 // route
 // const productsRouter = require("./routes/products");
@@ -38,7 +40,7 @@ app.get("/check", (req, res) => {
 
 })
 app.use("/api/v1/auth", authRouter);
-app.use("/api/v1/jobs", jobRouter);
+app.use("/api/v1/jobs", autnenticateUser, jobRouter);
 
 app.use(errorHandlerMiddleware);
 app.use(notFoundMiddleware);

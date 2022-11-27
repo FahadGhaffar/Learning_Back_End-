@@ -7,8 +7,9 @@ const { Model } = require("mongoose");
 const auth = async (req, res, next) => {
 
     const authHeader = req.headers.authorization
-
-    if (!authHeader || !authHeader.startsWith("Bearar ")) {
+    // console.log("hello");
+    //console.log(authHeader);
+    if (!authHeader) {
 
         throw new UnauthenticatedError("Auth Invalid ")
     }

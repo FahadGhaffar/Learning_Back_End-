@@ -34,19 +34,56 @@ const createJob = async (req, res) => {
     res.status(StatusCodes.CREATED).json({ job })
 }
 
-const updateJob = (req, res) => {
+const updateJob = async (req, res) => {
 
-    res.send("updateJob")
+    const { body: { company, position }, user: { userId }, params: { id: jobId } } = req
+
+
+    if (company == "" || position == "") {
+
+        throw new BadRequestError("Please provide Company and position")
+    }
+    const job = await Job.findByIdAndUpdate({
+        _id: jobId,
+        createdBy: userId
+    },
+        req.body,
+        { new: true, runValidators: true })
+
+    if (!job) {
+        throw new notFound(`No job with id = ${jobId}`);
+    }
+
+
+    res.status(StatusCodes.OK).json({ job })
+
 }
-const deleteJob = (req, res) => {
+const deleteJob = async (req, res) => {
 
-    res.send("deleteJob")
+    const { user: { userId }, params: { id: jobId } } = req
+
+    const job = await Job.findByIdAndRemove({
+        _id: jobId,
+        createdBy: userId
+    })
+
+    if (!job) {
+        throw new notFound(`No job with id = ${jobId}`);
+    }
+
+
+    res.status(StatusCodes.OK).send("Done Delete")
 }
+const filterAllJobs = (req, res) => {
 
+    console.log("chl ja");
+    res.send("filterAllJob")
+}
 module.exports = {
     getAllJobs,
     getJob,
     createJob,
     updateJob,
-    deleteJob
+    deleteJob,
+    filterAllJobs,
 }

@@ -2,3 +2,5 @@
 
 .env
 /node_modules
+
+/JobApi.postman_collection.json

@@ -134,22 +134,52 @@
 
 require('dotenv').config(); //to access the process.env params
 
-const sql = require("mssql"); //mssql object
+const sql = require("mssql/msnodesqlv8"); //mssql object
 
+
+// var dbConfig = {
+//     user: "test123",
+//     password: "123",
+//     server: "127.0.0.1",
+//     port: 49677,
+//     database: "WideWorldImporters",
+//     options: {
+//         database: 'WideWorldImporters',
+//         trustServerCertificate: true,
+//         instancename: 'MSSQLSERVERR'
+//     }
+// };
 
 var dbConfig = {
-    user: "DESKTOP-MICC6SV\dell 7490",
-    password: "",
-    server: "127.0.0.1",
+    server: '127.0.0.1',
     port: 49677,
     database: "WideWorldImporters",
+    driver: "msnodesqlv8",
     options: {
-        database: 'WideWorldImporters',
-        trustServerCertificate: true,
-        instancename: 'MSSQLSERVERR'
+        trustedConnection: true
     }
 };
 
+// try {
+
+//     sql.connect(dbConfig,
+//         function (err) {
+//             if (err) {
+//                 console.log("Error while connecting database: " + err)
+//             } else {
+//                 console.log("connected to database: " + dbConfig.server)
+
+//             }
+//         }
+//     ).then(async function () {
+//                             // Function to retrieve the data from table
+//                             const result = await sql.query(`select *  from Application.Cities`)
+//                             console.log(result)
+
+// } catch (error) {
+
+// }
+// dbConnect()
 try {
     //connection config will be used here to connect to the local/remote db
     sql.connect(dbConfig)
